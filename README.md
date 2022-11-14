@@ -10,8 +10,8 @@
 
 - [박동석](https://github.com/pds0309)
 - [백세현](https://github.com/bsh714-dev)
-- [김수정]()
-- [신유경]()
+- [김수정](https://github.com/soojung01)
+- [신유경](https://github.com/superariella)
 
 
 <br>
@@ -41,3 +41,9 @@
 ### UI 와이어프레임
 
 - [wireframe by 신유경 님](https://www.figma.com/file/JmxY0Q1WBgMGkrbutM2Z2X/Untitled?node-id=5%3A83)
+
+<br>
+
+### [팀원필독!] 깃&깃허브로 프로젝트 진행하기
+
+- [클릭](https://github.com/hanghae99-10-e-4/lets_explore_daiso/wiki/git-&-github%EB%A1%9C-%ED%98%91%EC%97%85%ED%95%98%EA%B8%B0)
