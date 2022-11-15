@@ -1,9 +1,15 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, make_response
 import hashlib
 from db_connect import mongodb
+import datetime
+import jwt
+from dotenv import load_dotenv
+from pathlib import Path
+import os
 
 join_api = Blueprint('join_api', __name__)
 id_check_api = Blueprint('id_check_api', __name__)
+login_api = Blueprint('login_api', __name__)
 
 
 @join_api.route('/api/users', methods=['POST'])
@@ -12,7 +18,7 @@ def api_join():
     id_receive = received['id']
     pw_hash = get_encrypted_password(received['password'])
 
-    mongodb().user.insert_one({'id': id_receive, 'pw': pw_hash})
+    mongodb().user.insert_one({'id': id_receive, 'password': pw_hash})
 
     return jsonify({'msg': '회원가입 성공'})
 
@@ -27,5 +33,31 @@ def api_check_id():
         return jsonify({'msg': '사용가능한 아이디입니다.', 'available': True})
 
 
+@login_api.route("/api/users/login", methods=['POST'])
+def api_login():
+    id_receive = request.form['id']
+    pw_receive = request.form['password']
+    pw_hash = get_encrypted_password(pw_receive)
+    result = mongodb().user.find_one({'id': id_receive, 'password': pw_hash})
+
+    if result is not None:
+        payload = {
+            'id': id_receive,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=3600)
+        }
+        token = jwt.encode(payload, get_secret_key(), algorithm='HS256')
+        resp = make_response(jsonify({'result': 'success', 'token': token, 'msg': '인증 성공'}))
+        resp.set_cookie('accessToken', token)
+        return resp
+    else:
+        return jsonify({'result': 'fail', 'msg': '아이디 또는 비밀번호를 확인하세요'})
+
+
 def get_encrypted_password(pwd):
     return hashlib.sha256(pwd.encode('utf-8')).hexdigest()
+
+
+def get_secret_key():
+    dotenv_path = Path('.env')
+    load_dotenv(dotenv_path=dotenv_path)
+    return os.getenv('SECRET_KEY')
