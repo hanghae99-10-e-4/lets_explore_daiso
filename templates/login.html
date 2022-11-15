@@ -186,9 +186,20 @@
                 idValidation.setState(target.value, false);
                 return;
             }
-            inputValidator.style.color = 'green';
-            inputValidator.innerText = '사용 가능한 아이디입니다';
-            idValidation.setState(target.value, true);
+            $.ajax({
+                type: "GET",
+                url: `/api/users?id=${target.value}`,
+                success: function (response) {
+                    inputValidator.innerText = response['msg'];
+                    if (response['available']) {
+                        inputValidator.style.color = 'green';
+                        idValidation.setState(target.value, true);
+                    } else {
+                        inputValidator.style.color = '#FF6969';
+                        idValidation.setState(target.value, false);
+                    }
+                }
+            });
         }
 
         function validPassword(target) {
