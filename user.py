@@ -53,6 +53,19 @@ def api_login():
         return jsonify({'result': 'fail', 'msg': '아이디 또는 비밀번호를 확인하세요'})
 
 
+@login_api.route("/api/users/auth", methods=['GET'])
+def api_auth():
+    token_receive = request.cookies.get('accessToken')
+    try:
+        payload = jwt.decode(token_receive, get_secret_key(), algorithms=['HS256'])
+        userinfo = mongodb().user.find_one({'id': payload['id']}, {'_id': 0})
+        return jsonify({'result': 'success', 'id': userinfo['id']})
+    except jwt.ExpiredSignatureError:
+        return jsonify({'result': 'fail', 'msg': '로그인 시간이 만료되었습니다.'})
+    except jwt.exceptions.DecodeError:
+        return jsonify({'result': 'fail', 'msg': '로그인 정보가 존재하지 않습니다.'})
+
+
 def get_encrypted_password(pwd):
     return hashlib.sha256(pwd.encode('utf-8')).hexdigest()
 
