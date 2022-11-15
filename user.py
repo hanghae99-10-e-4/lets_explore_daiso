@@ -7,12 +7,10 @@ from dotenv import load_dotenv
 from pathlib import Path
 import os
 
-join_api = Blueprint('join_api', __name__)
-id_check_api = Blueprint('id_check_api', __name__)
-login_api = Blueprint('login_api', __name__)
+user_api = Blueprint('user_api', __name__)
 
 
-@join_api.route('/api/users', methods=['POST'])
+@user_api.route('/api/users', methods=['POST'])
 def api_join():
     received = request.get_json()
     id_receive = received['id']
@@ -23,7 +21,7 @@ def api_join():
     return jsonify({'msg': '회원가입 성공'})
 
 
-@id_check_api.route("/api/users", methods=['GET'])
+@user_api.route("/api/users", methods=['GET'])
 def api_check_id():
     id_receive = request.args.get('id')
     user_by_id = mongodb().user.find_one({'id': id_receive})
@@ -33,7 +31,7 @@ def api_check_id():
         return jsonify({'msg': '사용가능한 아이디입니다.', 'available': True})
 
 
-@login_api.route("/api/users/login", methods=['POST'])
+@user_api.route("/api/users/login", methods=['POST'])
 def api_login():
     id_receive = request.form['id']
     pw_receive = request.form['password']
@@ -53,7 +51,7 @@ def api_login():
         return jsonify({'result': 'fail', 'msg': '아이디 또는 비밀번호를 확인하세요'})
 
 
-@login_api.route("/api/users/auth", methods=['GET'])
+@user_api.route("/api/users/auth", methods=['GET'])
 def api_auth():
     token_receive = request.cookies.get('accessToken')
     try:
