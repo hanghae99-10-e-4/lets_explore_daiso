@@ -10,9 +10,214 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <style>
+        input {
+            min-height: 50px;
+        }
+
+        .my-divider {
+            position: relative;
+        }
+
+        .my-divider::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            z-index: -1;
+            width: 1px;
+            height: 22vh;
+            min-height: 400px;
+            margin-top: 50px;
+            background: lightgrey;
+        }
+
+        .my-horizon-divider {
+            display: none;
+        }
+
+        @media (max-width: 991px) {
+            .my-flexbox {
+                margin: 30px 0 60px 0;
+            }
+
+            .my-divider::after {
+                display: none;
+            }
+
+            .my-horizon-divider {
+                display: block;
+                height: 1px;
+                background-color: lightgrey;
+                margin-bottom: 60px;
+            }
+        }
+
+        .my-button {
+            border-radius: 6px;
+            padding: 12px 36px 12px 36px;
+            font-weight: 700;
+        }
+
+        .my-button:hover {
+            opacity: 0.7;
+        }
+
+        .my-validator {
+            color: #FF6969;
+            size: 14px;
+        }
+
+        .my-form-title {
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
-로그인 & 회원가입 페이지
+<div class="container">
+    <div class="row justify-content-around mt-5 pt-2">
+        <div class="col-lg-4 col-md-12 my-flexbox">
+            <form>
+                <h3 class="pt-2 pb-2 mb-4 my-form-title">로그인</h3>
+                <div class="mb-2">
+                    <input type="text" class="form-control" id="login-id-input"
+                           placeholder="아이디 입력">
+                    <div class="form-text">&nbsp</div>
+                </div>
+                <div class="mb-4">
+                    <input type="password" class="form-control" id="password-input"
+                           placeholder="패스워드 입력">
+                </div>
+                <div id="login-help" class="form-text my-validator">&nbsp</div>
+                <button type="submit" class="btn btn-dark my-button">로그인</button>
+            </form>
+        </div>
+        <div class="col-1 my-divider"></div>
+        <div class="my-horizon-divider"></div>
+        <div class="col-lg-4 col-md-12">
+            <h3 class="pt-2 pb-2 mb-4 my-form-title">회원가입</h3>
+            <div class="mb-2">
+                <input type="text" class="form-control" id="join-id" aria-describedby="join-id-help"
+                       placeholder="아이디 입력">
+                <div id="join-id-help" class="form-text my-validator">&nbsp;</div>
+            </div>
+            <div class="mb-2">
+                <input type="password" class="form-control" id="join-password"
+                       aria-describedby="join-password-help" placeholder="패스워드 입력">
+                <div id="join-password-help" class="form-text my-validator">&nbsp;</div>
+            </div>
+            <div class="mb-4">
+                <input type="password" class="form-control" id="join-password-confirm"
+                       aria-describedby="join-password-confirm-help" placeholder="패스워드 확인">
+                <div id="join-password-confirm-help" class="form-text my-validator">&nbsp;</div>
+            </div>
+            <button id="button-join" type="button" class="btn btn-dark my-button">회원가입</button>
+        </div>
+    </div>
+</div>
+<script>
+    (function () {
+
+        const registerUserApi = async (id, password) => {
+            const request = {id: id, password: password};
+            const response = await fetch('/api/users', {
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                method: 'POST',
+                body: JSON.stringify(request)
+            });
+            if (response.status === 200) {
+                alert('회원가입 성공');
+                window.location.href = '/';
+            } else {
+                alert('회원가입 실패')
+            }
+        }
+
+        const validationState = () => {
+            let currentValidationState = [undefined, false];
+
+            function setState(value, isValid) {
+                currentValidationState = [value, isValid];
+            }
+
+            function getState() {
+                return currentValidationState;
+            }
+
+            return {getState, setState};
+        }
+
+        const idValidation = validationState();
+        const passwordValidation = validationState();
+        const passwordConfirmValidation = validationState();
+
+        document.getElementById('join-id')
+            .addEventListener("blur", (e) => {
+                    validJoinId(e.target);
+                }
+            )
+        document.getElementById('join-password')
+            .addEventListener("blur", (e) => {
+                    validPassword(e.target);
+                }
+            )
+
+        document.getElementById('join-password-confirm')
+            .addEventListener("blur", (e) => {
+                    confirmPassword(e.target);
+                }
+            )
+
+        document.getElementById('button-join')
+            .addEventListener('click', () => {
+                const [ids, passwords, passwordConfirms] =
+                    [idValidation.getState(), passwordValidation.getState(), passwordConfirmValidation.getState()];
+                ids[1] && passwords[1] && passwordConfirms[1] && registerUserApi(ids[0], passwords[0]);
+            });
+
+        function validJoinId(target) {
+            const nameRegex = /^[가-힣A-Za-z0-9]{2,10}$/;
+            const inputValidator = document.getElementById(target.id + '-help');
+            if (!nameRegex.test(target.value)) {
+                inputValidator.style.color = '#FF6969';
+                inputValidator.innerText = '2~10글자의 영문/한글/숫자를 입력하세요'
+                idValidation.setState(target.value, false);
+                return;
+            }
+            inputValidator.style.color = 'green';
+            inputValidator.innerText = '사용 가능한 아이디입니다';
+            idValidation.setState(target.value, true);
+        }
+
+        function validPassword(target) {
+            const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,16}$/;
+            const inputValidator = document.getElementById(target.id + '-help');
+            if (!passwordRegex.test(target.value)) {
+                inputValidator.style.color = '#FF6969';
+                inputValidator.innerText = '6~16글자의 영문+숫자가 반드시 포함되어야 합니다.'
+                passwordValidation.setState(target.value, false);
+                return;
+            }
+            inputValidator.style.color = 'green';
+            inputValidator.innerText = '사용 가능한 비밀번호입니다.';
+            passwordValidation.setState(target.value, true);
+        }
+
+        function confirmPassword(target) {
+            const inputValidator = document.getElementById(target.id + '-help');
+            if (target.value !== passwordValidation.getState()[0]) {
+                inputValidator.style.color = '#FF6969';
+                inputValidator.innerText = '비밀번호가 일치하지 않습니다.'
+                passwordConfirmValidation.setState(target.value, false);
+                return;
+            }
+            inputValidator.style.color = 'green';
+            inputValidator.innerText = '비밀번호가 일치합니다!';
+            passwordConfirmValidation.setState(target.value, true);
+        }
+    })()
+</script>
 </body>
 </html>
