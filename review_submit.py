@@ -2,9 +2,6 @@ from flask import Blueprint, jsonify, request, render_template
 submit_api = Blueprint('submit_api', __name__)
 from db_connect import mongodb
 
-@submit_api.route('/')
-def home():
-    return render_template('index.html')
 
 @submit_api.route('/review-submit', methods=['POST'])
 def review_submit():
@@ -19,6 +16,6 @@ def review_submit():
         'title': title_receive,
         'comment': comment_receive
     }
-    mongodb().users.insert_one(doc)
+    mongodb().review.insert_one(doc)
     return jsonify({'msg': '게시완료!'})
 
