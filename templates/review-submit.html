@@ -12,21 +12,6 @@
             crossorigin="anonymous"></script>
 
     <style>
-        .mainBanner {
-            width: 100%;
-            height: 400px;
-
-            background-image: url('https://i.imgur.com/H1t9uN5.png');
-            background-position: left;
-            background-size: cover;
-
-            color: red;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
         .reviewBox-1 {
             width: 700px;
             height: 50px;
@@ -87,7 +72,7 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        .btn {
+        .submit-btn {
             width: 90px;
             height: 40px;
             margin: 20px;
@@ -95,7 +80,7 @@
             background-color: black;
             border-radius: 5px;
         }
-        .btn:hover {
+        .submit-btn:hover {
             background-color: #D9D9D9;
         }
         .myfile {
@@ -110,22 +95,7 @@
             justify-content: center;
             align-items: center;
         }
-        .headbtn {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: right;
-        }
-        .mybtn {
-            margin: 10px;
-            background-color: #9C9C9C;
-            border-color: #9C9C9C;
-            color: white;
-            Width: 78px;
-            Height: 26px;
-            border-radius: 6px;
-            font-weight: bold;
-        }
+
     </style>
     <script>
         function posting() {
@@ -156,11 +126,11 @@
     </script>
 </head>
 <body>
-    <div class="headbtn">
-        <button onclick="" type="button" class="mybtn">LOG-IN</button>
-        <button onclick="" type="button" class="mybtn">WRITE</button>
+    <div>
+        {% block content %}
+            {% include 'header.html' %}
+        {% endblock %}
     </div>
-    <div class="mainBanner"></div>
     <div class="reviewBox-1">
         <h2>상품의 후기를 등록해주세요:)</h2>
     </div>
@@ -188,7 +158,7 @@
             <textarea class="form3" id="comment" rows="3" maxlength="1000" name="mytxt3" placeholder="내용을 입력하세요" required></textarea>
         </div>
         <div>
-        <button onclick="posting()" type="submit" class="btn">등록</button>
+        <button onclick="posting()" type="submit" class="submit-btn">등록</button>
         </div>
     </div>
 </body>
