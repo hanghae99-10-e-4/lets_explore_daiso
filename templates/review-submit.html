@@ -3,9 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>LET'S EXPLORE DAISO</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -13,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
     <style>
         .mainBanner {
             width: 100%;
@@ -137,6 +134,14 @@
             let title = $('#title').val()
             let comment = $('#comment').val()
 
+            const priceValue = document.getElementByID('price').value;
+            const commentValue = document.getElementByID('comment').value;
+            const titleValue = document.getElementByID('title').value;
+            if (!priceValue || !commentValue || !titleValue) {
+                alert("빈칸을 입력하세요")
+                return;
+            }
+
             $.ajax({
                 type: 'POST',
                 url: '/review-submit',
@@ -147,6 +152,7 @@
                 }
             });
         }
+
     </script>
 </head>
 <body>
@@ -158,7 +164,7 @@
     <div class="reviewBox-1">
         <h2>상품의 후기를 등록해주세요:)</h2>
     </div>
-    <form action="" method="post" class="reviewBox-2">
+    <div class="reviewBox-2">
         <div class="myfile">
             <label for="myfile" class="form-label">사진을 첨부하세요</label>
             <input type="file" id="myfile" accept="image/jpeg, image/jpg, image/png"/>
@@ -182,8 +188,8 @@
             <textarea class="form3" id="comment" rows="3" maxlength="1000" name="mytxt3" placeholder="내용을 입력하세요" required></textarea>
         </div>
         <div>
-        <button onsubmit="posting()" type="submit" class="btn">등록</button>
+        <button onclick="posting()" type="submit" class="btn">등록</button>
         </div>
-    </form>
+    </div>
 </body>
 </html>
