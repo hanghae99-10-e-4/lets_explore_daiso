@@ -55,123 +55,174 @@
         }
 
     </style>
-    <script>
+        <script>
 
-    </script>
+            $(document).ready(function () {
+                listing();
+            });
+
+            function listing() {
+                $('#cards-box').empty()
+                $.ajax({
+                    type: 'GET',
+                    url: '/lets_explore_daiso',
+                    data: {},
+                    success: function (response) {
+                        let rows = response['users']
+                        for (let i = 0; i < rows.length; i++) {
+                            let image = rows[i]['image']
+                            let user = rows[i]['user']
+                            let star = rows[i]['star']
+                            let star_image = '⭐'.repeat(star)
+
+                            let temp_html = `<div class="col">
+                                                <div class="card h-100">
+                                                    <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
+                                                         class="card-img-top">
+                                                    <div class="card-body">
+                                                        <p class="card-title">nickname: ${user}</p>
+                                                        <p class="card-text">제목: ${title}</p>
+                                                        <p>별점: ${star_image}</p>
+
+                                                    </div>
+                                                </div>
+                                            </div>`
+
+                            $('#cards-box').append(temp_html)
+
+                                    function posting() {
+            let url = $('#url').val()
+            let star = $('#star').val()
+            let comment = $('#comment').val()
+
+            $.ajax({
+                type: 'POST',
+                url: '/movie',
+                data: {url_give: url, star_give: star, comment_give: comment},
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                        }
+                    }
+                                    )}
+
+
+            </script>
     </head>
 
-<body>
+    <body>
 
-<div class="">
-    <div class="myheader">
-        <button onclick="" type="button" class="btn btn-secondary mybtn"> LOG-IN</button>
-        <button onclick="" type="button" class="btn btn-secondary mybtn"> WRITE</button>
-    </div>
-</div>
-
-<div class="">
-    <div class="mybackimage">
-    </div>
-</div>
-
-
-<div class="mycards">
-    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">NICK : 닉네임은 여기에 </h5>
-                    <p class="card-text">RATING : ⭐⭐⭐</p>
-                    <p class="mycomment">후기 작성은 여기에</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">NICK : </h5>
-                    <p class="card-text">RATING : ⭐⭐⭐</p>
-                    <p class="mycomment">후기 작성</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">NICK : </h5>
-                    <p class="card-text">RATING : ⭐⭐⭐</p>
-                    <p class="mycomment">후기 작성</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">NICK : </h5>
-                    <p class="card-text">RATING : ⭐⭐⭐</p>
-                    <p class="mycomment">후기 작성</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">NICK : 닉네임은 여기에 </h5>
-                    <p class="card-text">RATING : ⭐⭐⭐</p>
-                    <p class="mycomment">후기 작성은 여기에</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">NICK : </h5>
-                    <p class="card-text">RATING : ⭐⭐⭐</p>
-                    <p class="mycomment">후기 작성</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">NICK : </h5>
-                    <p class="card-text">RATING : ⭐⭐⭐</p>
-                    <p class="mycomment">후기 작성</p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                     class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">NICK : </h5>
-                    <p class="card-text">RATING : ⭐⭐⭐</p>
-                    <p class="mycomment">후기 작성</p>
-                </div>
+        <div class="">
+            <div class="myheader">
+                <button onclick="/login.html" type="button" class="btn btn-secondary mybtn"> LOG-IN</button>
+                <button onclick="/review_submit.html" type="button" class="btn btn-secondary mybtn"> WRITE</button>
             </div>
         </div>
 
-    </div>
-</div>
-<div class="mycards">
-    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-    </div>
-</div>
+        <div class="">
+            <div class="mybackimage">
+            </div>
+        </div>
 
-</body>
+
+        <div class="mycards">
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
+                             class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">NICK : 닉네임은 여기에 </h5>
+                            <p class="card-text">RATING : ⭐⭐⭐</p>
+                            <p class="mycomment">후기 작성은 여기에</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
+                             class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">NICK : </h5>
+                            <p class="card-text">RATING : ⭐⭐⭐</p>
+                            <p class="mycomment">후기 작성</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
+                             class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">NICK : </h5>
+                            <p class="card-text">RATING : ⭐⭐⭐</p>
+                            <p class="mycomment">후기 작성</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
+                             class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">NICK : </h5>
+                            <p class="card-text">RATING : ⭐⭐⭐</p>
+                            <p class="mycomment">후기 작성</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
+                             class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">NICK : 닉네임은 여기에 </h5>
+                            <p class="card-text">RATING : ⭐⭐⭐</p>
+                            <p class="mycomment">후기 작성은 여기에</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
+                             class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">NICK : </h5>
+                            <p class="card-text">RATING : ⭐⭐⭐</p>
+                            <p class="mycomment">후기 작성</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
+                             class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">NICK : </h5>
+                            <p class="card-text">RATING : ⭐⭐⭐</p>
+                            <p class="mycomment">후기 작성</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
+                             class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">NICK : </h5>
+                            <p class="card-text">RATING : ⭐⭐⭐</p>
+                            <p class="mycomment">후기 작성</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="mycards">
+                <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+                </div>
+        </div>
+
+    </body>
 </html>
