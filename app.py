@@ -2,11 +2,14 @@ from flask import Flask, render_template
 from db_connect import check_connection
 from exam import exam_api
 from review_submit import submit_api
+from user import user_api
+
 app = Flask(__name__)
 
 ### 이곳에 api를 등록하세요
 app.register_blueprint(exam_api)
 app.register_blueprint(submit_api)
+app.register_blueprint(user_api)
 
 
 # 메인 페이지
