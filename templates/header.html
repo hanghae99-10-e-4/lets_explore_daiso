@@ -74,7 +74,11 @@
                 loginstatus.setState(true);
             } else {
                 document.getElementById('id-no-header').style.display = 'flex';
-                loginstatus.setState(false)
+                loginstatus.setState(false);
+                if (window.location.pathname === '/review-submit') {
+                    alert("로그인이필요합니다.");
+                    window.location.href = '/login';
+                }
             }
         }
     })
