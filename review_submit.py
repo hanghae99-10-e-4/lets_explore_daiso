@@ -19,6 +19,9 @@ def review_submit():
 
     user_id = userinfo['id']
 
+    res = list(mongodb().review.find().sort([('_id', -1)]).limit(1))
+    id = 1 if (not res) else (res[0]['id'] + 1)
+
     star_receive = request.form['star_give']
     price_receive = request.form['price_give']
     title_receive = request.form['title_give']
@@ -26,6 +29,7 @@ def review_submit():
     images_receive = request.form.getlist('images_give[]')
 
     doc = {
+        'id': id,
         'userId': user_id,
         'rating': star_receive,
         'price': price_receive,
