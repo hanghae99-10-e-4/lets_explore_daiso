@@ -6,7 +6,7 @@ review_list_api = Blueprint('review_list_api', __name__)
 
 @review_list_api.route('/api/reviews', methods=['GET'])
 def get_review_list():
-    db_results = list(mongodb().review.find({}, {'_id': False}))
+    db_results = list(mongodb().review.find().sort([('_id', -1)]))
     response_list = []
     for db_result in db_results:
         thumbnail_image = 'undefined'
