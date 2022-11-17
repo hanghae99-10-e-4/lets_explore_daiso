@@ -13,13 +13,12 @@
             background-color: whitesmoke;
             background-position: center;
             background-size: cover;
-
             border: 2px solid gray;
             text-align: center;
             padding-top: 40px;
-
             margin: 50px auto;
         }
+
         .bshcol {
             color: black;
             width: 700px;
@@ -27,64 +26,174 @@
             background-color: whitesmoke;
             background-position: center;
             background-size: cover;
-
-
             text-align: left;
             padding-top: 40px;
-
             margin: 50px auto;
         }
 
         .bshcard-img-top {
-
             width: 700px;
             height: 400px;
-
         }
 
+        .carousel {
+            margin: 24px 0px 12px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .carousel-sections-scroll {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .carousel-sections {
+            height: 400px;
+            display: flex;
+            transition: 250ms transform ease-in;
+        }
+
+        .carousel-sections > img {
+            min-width: 100%;
+            height: 100%;
+            border-radius: 24px;
+        }
+
+        .carousel-section {
+            width: 700px;
+        }
+
+        .prev-arrow,
+        .next-arrow {
+            z-index: 10;
+            position: relative;
+            height: 24px;
+            width: 24px;
+            margin: 0px 12px;
+            background-color: #34db88;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 150ms all ease-in;
+            -webkit-box-shadow: 0px 2px 5px 0px rgba(184, 184, 184, 1);
+            -moz-box-shadow: 0px 2px 5px 0px rgba(184, 184, 184, 1);
+            box-shadow: 0px 2px 5px 0px rgba(184, 184, 184, 1);
+        }
+
+        .prev-arrow:hover,
+        .next-arrow:hover {
+            -webkit-box-shadow: 0px 2px 13px 0px rgba(128, 128, 128, 1);
+            -moz-box-shadow: 0px 2px 13px 0px rgba(128, 128, 128, 1);
+            box-shadow: 0px 2px 13px 0px rgba(128, 128, 128, 1);
+        }
+
+        .prev-arrow:after,
+        .prev-arrow:before,
+        .next-arrow:after,
+        .next-arrow:before {
+            content: "";
+            height: 10px;
+            width: 2px;
+            border-radius: 10px;
+            position: absolute;
+            left: 10px;
+            background-color: #209158;
+        }
+
+        .next-arrow:after,
+        .next-arrow:before {
+            left: 12px;
+        }
+
+        .prev-arrow:after {
+            top: 4px;
+            transform: rotate(45deg);
+        }
+
+        .prev-arrow:before {
+            top: 10px;
+            transform: rotate(-45deg);
+        }
+
+        .next-arrow:after {
+            top: 4px;
+            transform: rotate(-45deg);
+        }
+
+        .next-arrow:before {
+            top: 10px;
+            transform: rotate(45deg);
+        }
+
+        .carousel-dots {
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            cursor: pointer;
+            border-radius: 8px;
+            background-color: #afafaf;
+            margin: 0px 4px;
+            transition: 100ms background-color ease-in;
+        }
+
+        .carousel-dot.active {
+            background-color: #5f5f5f;
+        }
 
     </style>
     <script>
-        $(document).ready(function () {
+        let slides = [];
+        window.onload = () => {
             show_review();
-        });
-
+        }
 
         function show_review() {
-			$('#cards-box').empty()
-			let urlParams = new URL(location.href).searchParams;
+            let urlParams = new URL(location.href).searchParams;
             let rNumber = urlParams.get('reviewNum');
             $.ajax({
                 type: 'GET',
                 url: `/api/reviews/${rNumber}`,
                 success: function (response) {
-                    console.log('review')
-
+                    console.log(response);
                     let rows = response['review']
                     let images = rows['images']
                     let title = rows['title']
-                    let content = rows['content']
+                    let comment = rows['comment'];
                     let rating = rows['rating']
                     let price = rows['price']
-
-                        let star_image = '⭐'.repeat(rating)
-
-                        let temp_html = `<div class="col">
-                        <img src="${images}" class="bshcard-img-top">
+                    let star_image = '⭐'.repeat(rating)
+                    if (images.length !== 0) {
+                        images.forEach((img, idx) => {
+                            document.getElementById(`id-dot-${idx}`).style.visibility = 'visible'
+                            document.getElementById(`id-img-${idx}`).style.visibility = 'visible'
+                            document.getElementById(`id-img-${idx}`).setAttribute('src', img);
+                        });
+                        init(images.length);
+                        {#$('#id-carousel')#}
+                        {#    .append(`<img class="carousel-section"#}
+                        {# src="http://hang99-10-e-dai.com/images/dai/22-11-16/18-02-56-830c619f-7793-40d1-928a-1ce9e7f2ca00.jpg">`)#}
+                    } else {
+                        document.getElementById('id-carousel-container').remove();
+                    }
+                    let temp_html = `<div class="col">
                         <div class="card h-100">
                         <div class="card-body">
-                        <h1>${title}</h1>
+                        <h1 style="color: black">${title}</h1>
                         <h2>${star_image}</h2>
-                        <h4>가격: ${price}원</h4>
-                        <h4>내용 :</h4>
-                        <p>${content}</p>
+                        <h4 style="color: black">가격: ${price}원</h4>
+                        <h4 style="color: black">내용 :</h4>
+                        <p style="color: black">${comment}</p>
                         <br>
-
                         </div>
                         </div>
                         </div>`
-                        $('#cards-box').append(temp_html)
-                    }
+                    $('#cards-box').append(temp_html)
                 }
             })
         }
@@ -97,24 +206,97 @@
     {% endblock %}
 </div>
 <div class="my_title" id="cards-box">
-    <div class="bshcol">
-                        <img src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9965233359B2298332"
-                             class="bshcard-img-top">
-                        <div class="bshcard h-100">
-                        <div class="bshcard-body">
-                        <h2>다이소 여행용품 소개</h2>
-                        <h2>⭐⭐⭐</h2>
-                        <h4>가격: 3000원</h4>
-                        <h4>내용 :</h4>
-                        <p>다이소라는 명칭은 일본의 다이소산업(대창산업/大創産業)에서 지분투자를 받기 시작하면서, 이 회사가 운영하는 일본의 100엔 숍 브랜드 이름에서 가져온 것이다.
-
-위에서도 알 수 있듯이 다이소라는 명칭은 일본 다이소에서 나온 게 맞지만 몇몇 사람들은 한국어 '다 있소'에서 이 단어가 유래했다고 알고 있는 경우도 있다. 헌데 2010년대 들어선 이런 것도 마케팅에 효과가 있다고 판단했는지 다이소에서 직접 '다 있소'라는 말과 엮어서 홍보하기도 한다. 이에 대해 박정부 회장은 "다이소에 가면 다있소를 떠올리게 하는 이름이 매력적으로 다가왔다.", "인지도를 확보하기 위해 브랜드를 갖다 쓴 것인데, 생각해보니 경솔했다."라며 하소연하기도 했다.</p>
-                        <br>
-
-                        </div>
-                        </div>
-                        </div>
+    <div id="id-carousel-container">
+        <div class="carousel">
+            <div class="prev-arrow"></div>
+            <div class="carousel-sections-scroll">
+                <div id="id-carousel" class="carousel-sections">
+                    <img id="id-img-0" class="carousel-section" style="visibility: hidden"
+                         src="">
+                    <img id="id-img-1" class="carousel-section" style="visibility: hidden"
+                         src="">
+                    <img id="id-img-2" class="carousel-section" style="visibility: hidden"
+                         src="">
+                    <img id="id-img-3" class="carousel-section" style="visibility: hidden"
+                         src="">
+                    <img id="id-img-4" class="carousel-section" style="visibility: hidden"
+                         src="">
+                </div>
+            </div>
+            <div class="next-arrow"></div>
+        </div>
+        <div class="carousel-dots">
+            <div id="id-dot-0" class="carousel-dot" style="visibility: hidden"></div>
+            <div id="id-dot-1" class="carousel-dot" style="visibility: hidden"></div>
+            <div id="id-dot-2" class="carousel-dot" style="visibility: hidden"></div>
+            <div id="id-dot-3" class="carousel-dot" style="visibility: hidden"></div>
+            <div id="id-dot-4" class="carousel-dot" style="visibility: hidden"></div>
+        </div>
+    </div>
 </div>
+<script>
+    const prevBtn = document.querySelector("div.prev-arrow");
+    const nextBtn = document.querySelector("div.next-arrow");
+    const sectionContainer = document.querySelector("div.carousel-sections");
 
+    prevBtn.onclick = prev;
+    nextBtn.onclick = next;
+
+    let currentIndex = 0;
+    let dots = [];
+
+    function render() {
+        let offset = 0;
+        slides.forEach((slide, index) => {
+            if (index < currentIndex) {
+                offset += slide.offsetWidth;
+            }
+        });
+
+        sectionContainer.style.transform = `translateX(-${offset}px)`;
+        dots.forEach((dot, index) => {
+            index === currentIndex
+                ? dot.classList.add("active")
+                : dot.classList.remove("active");
+        });
+    }
+
+    function prev() {
+        if (currentIndex < 0) return;
+        currentIndex -= 1;
+        render();
+    }
+
+    function next() {
+        if (currentIndex === slides.length - 1) return;
+        currentIndex += 1;
+        render();
+    }
+
+    function goto(newIndex) {
+        if (newIndex < 0 || newIndex > slides.length - 1) return;
+        currentIndex = newIndex;
+        render();
+    }
+
+    function init(size) {
+        const newSlides = document.querySelectorAll("div.carousel-sections > img");
+        slides = newSlides;
+        if (size) {
+            slides = [];
+            for (let i = 0; i < size; i++) {
+                slides[i] = newSlides[i];
+            }
+        }
+        const newDots = document.querySelectorAll("div.carousel-dots > div");
+        newDots.forEach((dot, index) => {
+            dot.onclick = () => goto(index);
+        });
+        dots = newDots;
+        render();
+    }
+
+    init();
+</script>
 </body>
 </html>
