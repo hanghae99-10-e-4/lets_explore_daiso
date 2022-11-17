@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>리뷰 상세페이지</title>
+
     <style>
-        .mytitle {
+        .my_title {
             color: white;
             width: 900px;
             height: auto;
@@ -19,7 +20,7 @@
 
             margin: 50px auto;
         }
-        .card {
+        .bshcol {
             color: black;
             width: 700px;
             height: auto;
@@ -34,15 +35,13 @@
             margin: 50px auto;
         }
 
-        .card-img-top {
+        .bshcard-img-top {
 
             width: 700px;
             height: 400px;
 
         }
-        .closed {
-            text-align: center;
-        }
+
 
     </style>
     <script>
@@ -52,25 +51,26 @@
 
 
         function show_review() {
+			$('#cards-box').empty()
+			let urlParams = new URL(location.href).searchParams;
+            let rNumber = urlParams.get('reviewNum');
             $.ajax({
                 type: 'GET',
-                url: '/show',
-                data: {},
+                url: `/show/${rNumber}`,
                 success: function (response) {
+                    console.log('review')
+
                     let rows = response['review']
-                    for (let i = 0; i < rows.length; i++) {
-                        let id = rows[i]['id']
-                        let images = rows[i]['images']
-                        let title = rows[i]['title']
-                        let content = rows[i]['content']
-                        let rating = rows[i]['rating']
-                        let price = rows[i]['rating']
-                        let userid = rows[i]['userid']
+                    let images = rows['images']
+                    let title = rows['title']
+                    let content = rows['content']
+                    let rating = rows['rating']
+                    let price = rows['price']
 
                         let star_image = '⭐'.repeat(rating)
 
                         let temp_html = `<div class="col">
-                        <img src="${images}" class="card-img-top">
+                        <img src="${images}" class="bshcard-img-top">
                         <div class="card h-100">
                         <div class="card-body">
                         <h1>${title}</h1>
@@ -78,9 +78,8 @@
                         <h4>가격: ${price}원</h4>
                         <h4>내용 :</h4>
                         <p>${content}</p>
-                        <div class="closed">
-                        <button type="button" class="btn btn-secondary"onClick='window.close()'>Close</button>
-                        </div>
+                        <br>
+
                         </div>
                         </div>
                         </div>`
@@ -97,12 +96,12 @@
         {% include 'header.html' %}
     {% endblock %}
 </div>
-<div class="mytitle" id="cards-box">
-    <div class="col">
+<div class="my_title" id="cards-box">
+    <div class="bshcol">
                         <img src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9965233359B2298332"
-                             class="card-img-top">
-                        <div class="card h-100">
-                        <div class="card-body">
+                             class="bshcard-img-top">
+                        <div class="bshcard h-100">
+                        <div class="bshcard-body">
                         <h2>다이소 여행용품 소개</h2>
                         <h2>⭐⭐⭐</h2>
                         <h4>가격: 3000원</h4>
@@ -111,9 +110,7 @@
 
 위에서도 알 수 있듯이 다이소라는 명칭은 일본 다이소에서 나온 게 맞지만 몇몇 사람들은 한국어 '다 있소'에서 이 단어가 유래했다고 알고 있는 경우도 있다. 헌데 2010년대 들어선 이런 것도 마케팅에 효과가 있다고 판단했는지 다이소에서 직접 '다 있소'라는 말과 엮어서 홍보하기도 한다. 이에 대해 박정부 회장은 "다이소에 가면 다있소를 떠올리게 하는 이름이 매력적으로 다가왔다.", "인지도를 확보하기 위해 브랜드를 갖다 쓴 것인데, 생각해보니 경솔했다."라며 하소연하기도 했다.</p>
                         <br>
-                        <div class="closed">
-                        <button type="button" class="btn btn-secondary"onClick='window.close()'>Close</button>
-                        </div>
+
                         </div>
                         </div>
                         </div>
