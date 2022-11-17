@@ -24,6 +24,10 @@
             listing();
         }
 
+        function handleCardClick(id) {
+            window.location.href = `/review-details?reviewNum=${id}`;
+        }
+
         function listing() {
             $('#cards-box').empty()
             $.ajax({
@@ -32,13 +36,14 @@
                 success: function (response) {
                     const rows = response['review']
                     for (let i = 0; i < rows.length; i++) {
+                        const id = rows[i].id;
                         const image = rows[i].thumbnailImage;
                         const title = rows[i].title;
                         const rating = rows[i].rating;
                         const userid = rows[i].userId;
                         const star_image = '⭐'.repeat(rating);
                         const temp_html = `<div class="col">
-                                                <div class="card h-100">
+                                                <div id="id-card-${id}" class="card h-100" onclick="handleCardClick(${id})">
                                                     <img class="my-card-list-image" src="${image}"
                                                          class="card-img-top">
                                                     <div class="card-body">
