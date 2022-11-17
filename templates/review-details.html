@@ -56,7 +56,7 @@
             let rNumber = urlParams.get('reviewNum');
             $.ajax({
                 type: 'GET',
-                url: `/show/${rNumber}`,
+                url: `/api/reviews/${rNumber}`,
                 success: function (response) {
                     console.log('review')
 
