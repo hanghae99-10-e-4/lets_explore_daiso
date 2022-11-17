@@ -44,7 +44,7 @@
                         const star_image = '⭐'.repeat(rating);
                         const temp_html = `<div class="col">
                                                 <div id="id-card-${id}" class="card h-100" onclick="handleCardClick(${id})">
-                                                    <img class="my-card-list-image" src="${image}"
+                                                    <img class="my-card-list-image" src="${image}" onerror="this.src='/static/image/errorimage.png';"
                                                          class="card-img-top">
                                                     <div class="card-body">
                                                         <p class="card-title">nickname: ${userid}</p>
