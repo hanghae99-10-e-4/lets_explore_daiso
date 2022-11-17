@@ -18,6 +18,14 @@
             height: 233px;
         }
 
+        .mymycard {
+            cursor: pointer;
+        }
+
+        .mymycard:hover {
+            opacity: 0.8;
+        }
+
     </style>
     <script>
         window.onload = () => {
@@ -43,7 +51,7 @@
                         const userid = rows[i].userId;
                         const star_image = '⭐'.repeat(rating);
                         const temp_html = `<div class="col">
-                                                <div id="id-card-${id}" class="card h-100" onclick="handleCardClick(${id})">
+                                                <div id="id-card-${id}" class="card h-100 mymycard" onclick="handleCardClick(${id})">
                                                     <img class="my-card-list-image" src="${image}" onerror="this.src='/static/image/errorimage.png';"
                                                          class="card-img-top">
                                                     <div class="card-body">
