@@ -39,6 +39,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+        }
+
+        .mybackimage:hover {
+            opacity: 0.8;
         }
 
         .myiamge-section {
@@ -116,9 +121,15 @@
         </div>
     </div>
     <div class="myiamge-section">
-        <div class="mybackimage">
+        <div id="id-my-backiamge" class="mybackimage">
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('id-my-backiamge')
+        .addEventListener('click', () => {
+            window.location.href = '/';
+        });
+</script>
 </body>
 </html>
