@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+
+    <title> 다이소 리뷰 상세보기 </title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+
+    <style>
+        .myheader {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: right;
+            padding: 10px 60px 10px 0;
+        }
+
+        .mybtn {
+            margin-left: 10px;
+            border-radius: 6px;
+        }
+
+        .mybackimage {
+            width: 100%;
+            height: 400px;
+
+            background-image: url('https://i.imgur.com/H1t9uN5.png ');
+            background-position: left;
+            background-size: cover;
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mytitle {
+            color: white;
+            width: 900px;
+            height: auto;
+            background-color: whitesmoke;
+            background-position: center;
+            background-size: cover;
+
+            border: 2px solid gray;
+            text-align: center;
+            padding-top: 40px;
+
+            margin: 50px auto;
+
+        }
+
+        .card {
+            color: black;
+            width: 700px;
+            height: 400px;
+            background-color: whitesmoke;
+            background-position: center;
+            background-size: cover;
+
+
+            text-align: left;
+            padding-top: 40px;
+
+            margin: 50px auto;
+        }
+
+        .card-img-top {
+
+            width: 700px;
+            height: 400px;
+
+        }
+        .closed {
+            text-align: center;
+        }
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            show_review();
+        });
+
+        function show_review() {
+            $.ajax({
+                type: 'GET',
+                url: '/show',
+                data: {},
+                success: function (response) {
+                    let rows = response['review']
+                    for (let i = 0; i < rows.length; i++) {
+                        let id = rows[i]['id']
+                        let images = rows[i]['images']
+                        let title = rows[i]['title']
+                        let content = rows[i]['content']
+                        let rating = rows[i]['rating']
+                        let price = rows[i]['rating']
+                        let userid = rows[i]['userid']
+
+                        let star_image = '⭐'.repeat(rating)
+
+                        let temp_html = `<div class="col">
+                        <img src="${images}" class="card-img-top">
+                        <div class="card h-100">
+                        <div class="card-body">
+                        <p>${title}</p>
+                        <p>${star_image}</p>
+                        <p>${price}원</p>
+                        <p>내용 :</p>
+                        <p>${content}</p>
+                        <div class="closed">
+                        <button type="button" class="btn btn-secondary"onClick='window.close()'>Close</button>
+                        </div>
+                        </div>
+                        </div>
+                        </div>`
+                        $('#cards-box').append(temp_html)
+                    }
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+
+<div class="">
+    <div class="myheader">
+        <button onclick="/login.html" type="button" class="btn btn-secondary mybtn"> LOG-IN</button>
+        <button onclick="/review_submit.html" type="button" class="btn btn-secondary mybtn"> WRITE</button>
+    </div>
+</div>
+
+<div class="">
+    <div class="mybackimage">
+    </div>
+</div>
+
+<div class="mytitle" id="cards-box">
+    <div class="col">
+<!--        <img src="https://nimage.g-enews.com/phpwas/restmb_allidxmake.php?idx=5&simg=2022072411402902618e8b8a793f7210178127232.jpg"-->
+<!--             class="card-img-top">-->
+<!--        <div class="card h-100">-->
+
+
+<!--            <div class="card-body">-->
+<!--                <p>제목</p>-->
+<!--                <p> ⭐⭐⭐</p>-->
+<!--                <p>가격</p>-->
+<!--                <p>내용 :</p>-->
+<!--                <p>리뷰 내용</p>-->
+            </div>
+    <div class="close">
+
+        </div>
+    </div>
+
+
+</div>
+
+
+</body>
+</html>
