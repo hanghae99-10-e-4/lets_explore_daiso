@@ -160,8 +160,11 @@
                 type: 'GET',
                 url: `/api/reviews/${rNumber}`,
                 success: function (response) {
-                    console.log(response);
-                    let rows = response['review']
+                    let rows = response['review'];
+                    if (rows === null) {
+                        window.location.href = "/";
+                        return;
+                    }
                     let images = rows['images']
                     let title = rows['title']
                     let comment = rows['comment'];
