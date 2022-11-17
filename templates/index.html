@@ -1,9 +1,7 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 
 <head>
-
-
     <title> LET'S EXPLORE DAISO 다이소 꿀템을 찾아보아요 ! :) </title>
 
     <meta charset="utf-8">
@@ -15,164 +13,59 @@
             max-width: 1200px;
         }
 
+        .my-card-list-image {
+            width: 100%;
+            height: 233px;
+        }
+
     </style>
-        <script>
+    <script>
+        window.onload = () => {
+            listing();
+        }
 
-            $(document).ready(function () {
-                listing();
-            });
-
-            function listing() {
-                $('#cards-box').empty()
-                $.ajax({
-                    type: 'GET',
-                    url: '/lets_explore_daiso',
-                    data: {},
-                    success: function (response) {
-                        let rows = response['users']
-                        for (let i = 0; i < rows.length; i++) {
-                            let image = rows[i]['image']
-                            let user = rows[i]['user']
-                            let star = rows[i]['star']
-                            let star_image = '⭐'.repeat(star)
-
-                            let temp_html = `<div class="col">
+        function listing() {
+            $('#cards-box').empty()
+            $.ajax({
+                type: 'GET',
+                url: '/api/reviews',
+                success: function (response) {
+                    const rows = response['review']
+                    for (let i = 0; i < rows.length; i++) {
+                        const image = rows[i].thumbnailImage;
+                        const title = rows[i].title;
+                        const rating = rows[i].rating;
+                        const userid = rows[i].userId;
+                        const star_image = '⭐'.repeat(rating);
+                        const temp_html = `<div class="col">
                                                 <div class="card h-100">
-                                                    <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
+                                                    <img class="my-card-list-image" src="${image}"
                                                          class="card-img-top">
                                                     <div class="card-body">
-                                                        <p class="card-title">nickname: ${user}</p>
+                                                        <p class="card-title">nickname: ${userid}</p>
                                                         <p class="card-text">제목: ${title}</p>
                                                         <p>별점: ${star_image}</p>
-
                                                     </div>
                                                 </div>
                                             </div>`
-
-                            $('#cards-box').append(temp_html)
-
-                                    function posting() {
-            let url = $('#url').val()
-            let star = $('#star').val()
-            let comment = $('#comment').val()
-
-            $.ajax({
-                type: 'POST',
-                url: '/movie',
-                data: {url_give: url, star_give: star, comment_give: comment},
-                success: function (response) {
-                    alert(response['msg'])
-                    window.location.reload()
-                        }
+                        console.log(temp_html)
+                        $('#cards-box').append(temp_html)
                     }
-                                    )}
-            </script>
-    </head>
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div>
+    {% block content %}
+        {% include 'header.html' %}
+    {% endblock %}
+</div>
+<div class="mycards">
+    <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
+    </div>
+</div>
 
-    <body>
-        <div>
-            {% block content %}
-                {% include 'header.html' %}
-            {% endblock %}
-        </div>
-        <div class="mycards">
-            <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                             class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">NICK : 닉네임은 여기에 </h5>
-                            <p class="card-text">RATING : ⭐⭐⭐</p>
-                            <p class="mycomment">후기 작성은 여기에</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                             class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">NICK : </h5>
-                            <p class="card-text">RATING : ⭐⭐⭐</p>
-                            <p class="mycomment">후기 작성</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                             class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">NICK : </h5>
-                            <p class="card-text">RATING : ⭐⭐⭐</p>
-                            <p class="mycomment">후기 작성</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                             class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">NICK : </h5>
-                            <p class="card-text">RATING : ⭐⭐⭐</p>
-                            <p class="mycomment">후기 작성</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                             class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">NICK : 닉네임은 여기에 </h5>
-                            <p class="card-text">RATING : ⭐⭐⭐</p>
-                            <p class="mycomment">후기 작성은 여기에</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                             class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">NICK : </h5>
-                            <p class="card-text">RATING : ⭐⭐⭐</p>
-                            <p class="mycomment">후기 작성</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                             class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">NICK : </h5>
-                            <p class="card-text">RATING : ⭐⭐⭐</p>
-                            <p class="mycomment">후기 작성</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="https://shop.daiso.co.kr/nas/cdn/ongds/1/10/1037561_00.jpg"
-                             class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">NICK : </h5>
-                            <p class="card-text">RATING : ⭐⭐⭐</p>
-                            <p class="mycomment">후기 작성</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="mycards">
-                <div class="row row-cols-1 row-cols-md-4 g-4" id="cards-box">
-                </div>
-        </div>
-
-    </body>
+</body>
 </html>
