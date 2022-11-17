@@ -175,14 +175,11 @@
                             document.getElementById(`id-img-${idx}`).setAttribute('src', img);
                         });
                         init(images.length);
-                        {#$('#id-carousel')#}
-                        {#    .append(`<img class="carousel-section"#}
-                        {# src="http://hang99-10-e-dai.com/images/dai/22-11-16/18-02-56-830c619f-7793-40d1-928a-1ce9e7f2ca00.jpg">`)#}
                     } else {
                         document.getElementById('id-carousel-container').remove();
                     }
-                    let temp_html = `<div class="col">
-                        <div class="card h-100">
+                    let temp_html = `<div class="bshcol">
+                        <div class="card h-100" style="background-color: whitesmoke;border: none">
                         <div class="card-body">
                         <h1 style="color: black">${title}</h1>
                         <h2>${star_image}</h2>
